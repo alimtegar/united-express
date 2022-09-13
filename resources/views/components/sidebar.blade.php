@@ -8,6 +8,19 @@ $links = [
     [
         "href" => [
             [
+                "section_text" => "Barang",
+                "section_list" => [
+                    ["href" => "user", "text" => "Daftar Barang"],
+                    ["href" => "user.new", "text" => "Tambah Barang"]
+                ]
+            ]
+        ],
+        "text" => "Barang",
+        "is_multi" => true,
+    ],
+    [
+        "href" => [
+            [
                 "section_text" => "User",
                 "section_list" => [
                     ["href" => "user", "text" => "Data User"],
