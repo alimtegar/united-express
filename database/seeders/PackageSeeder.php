@@ -15,7 +15,7 @@ class PackageSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('packages')->insert([
+        DB::table('packages')->insert([[
             'tracking_no' => 245863,
             'sender' => 'Matoa A',
             'recipient' => 'Susi Restiana Fauzi',
@@ -28,6 +28,32 @@ class PackageSeeder extends Seeder
             'cost' => 20000,
             'created_at' => now(),
             'updated_at' => now()
-        ]);
+        ], [
+            'tracking_no' => 245865,
+            'sender' => 'Matoa A',
+            'recipient' => 'Prasasti Sekar Asrinta',
+            'origin_code' => 'SOC',
+            'destination_code' => 'PWT',
+            'quantity' => 2,
+            'weight' => 41,
+            'type' => 'Parcel',
+            'description' => 'COD 240.000',
+            'cost' => 40000,
+            'created_at' => now(),
+            'updated_at' => now()
+        ], [
+            'tracking_no' => 245996,
+            'sender' => 'Matoa A',
+            'recipient' => 'Apri Dwi Lestari',
+            'origin_code' => 'SOC',
+            'destination_code' => 'CLP',
+            'quantity' => 1,
+            'weight' => 24,
+            'type' => 'Parcel',
+            'description' => 'COD 240.000',
+            'cost' => 20000,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]]);
     }
 }

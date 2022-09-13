@@ -3,9 +3,10 @@
 namespace App\Traits;
 
 
-trait WithDataTable {
-    
-    public function get_pagination_data ()
+trait WithDataTable
+{
+
+    public function get_pagination_data()
     {
         switch ($this->name) {
             case 'user':
@@ -20,6 +21,25 @@ trait WithDataTable {
                         'href' => [
                             'create_new' => route('user.new'),
                             'create_new_text' => 'Buat User Baru',
+                            'export' => '#',
+                            'export_text' => 'Export'
+                        ]
+                    ])
+                ];
+                break;
+
+            case 'package':
+                $packages = $this->model::search($this->search)
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate($this->perPage);
+
+                return [
+                    "view" => 'livewire.table.package',
+                    "packages" => $packages,
+                    "data" => array_to_object([
+                        'href' => [
+                            'create_new' => route('packages.create'),
+                            'create_new_text' => 'Tambah Barang',
                             'export' => '#',
                             'export_text' => 'Export'
                         ]

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePackageRequest;
 use App\Http\Requests\UpdatePackageRequest;
 use App\Models\Package;
+use App\Models\User;
 
 class PackageController extends Controller
 {
@@ -15,7 +16,10 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.packages.index', [
+            'user' => User::class,
+            'package' => Package::class,
+        ]);
     }
 
     /**
