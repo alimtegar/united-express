@@ -29,7 +29,9 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.packages.create', [
+            'user' => User::class,
+        ]);
     }
 
     /**

@@ -30,10 +30,6 @@
                     Kg
                     @include('components.sort-icon', ['field' => 'weight'])
                 </a></th>
-                <th><a wire:click.prevent="sortBy('cost')" role="button" href="#">
-                    Harga
-                    @include('components.sort-icon', ['field' => 'cost'])
-                </a></th>
                 <th><a wire:click.prevent="sortBy('created_at')" role="button" href="#">
                     Tanggal Dibuat
                     @include('components.sort-icon', ['field' => 'created_at'])
@@ -51,7 +47,6 @@
                     <td>{{ $package->destination_code }}</td>
                     <td>{{ $package->quantity }}</td>
                     <td>{{ $package->weight }}</td>
-                    <td>@money($package->cost)</td>
                     <td>{{ $package->created_at->format('d M Y H:i') }}</td>
                     {{-- <td class="whitespace-no-wrap row-action--icon">
                         <a role="button" href="/user/edit/{{ $package->id }}" class="mr-3"><i class="fa fa-16px fa-pen"></i></a>

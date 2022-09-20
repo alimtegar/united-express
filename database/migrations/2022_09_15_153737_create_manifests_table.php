@@ -13,18 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('manifests', function (Blueprint $table) {
             $table->id();
-            $table->integer('tracking_no')->unique();
-            $table->string('sender');
-            $table->string('recipient');
-            $table->string('origin_code');
-            $table->string('destination_code');
+            $table->foreignId('transit_destination_id')->constrained();
+            $table->foreignId('package_destination_id')->constrained();
             $table->integer('quantity');
             $table->integer('weight');
-            $table->string('type');
-            $table->text('description');
+            $table->integer('volume')->nullable();
             $table->integer('cost');
+            $table->date('date')->useCurrent();
             $table->timestamps();
         });
     }
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('manifests');
     }
 };
