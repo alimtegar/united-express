@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->integer('weight');
             $table->integer('volume')->nullable();
+            $table->integer('cod')->nullable();
             $table->integer('cost');
-            $table->date('date')->useCurrent();
             $table->timestamps();
         });
     }

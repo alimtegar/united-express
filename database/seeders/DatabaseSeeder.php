@@ -14,6 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            TransitDestinationSeeder::class,
+            PackageDestinationSeeder::class,
+            SenderSeeder::class,
+            ManifestSeeder::class,
+            InvoiceSeeder::class,
+            PackageSeeder::class,
+        ]);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

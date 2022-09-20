@@ -32,7 +32,7 @@
         <!-- Scripts -->
         <script defer src="{{ asset('vendor/alpine.js') }}"></script>
     </head>
-    <body class="antialiased">
+    <body class="antialiased sidebar-mini">
         <div id="app">
             <div class="main-wrapper">
                 @include('components.navbar')

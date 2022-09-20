@@ -2545,7 +2545,7 @@ body.sidebar-mini .main-sidebar {
       left: 65px;
       top: 10px;
       width: 200px;
-      display: none;
+      display: none !important;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.03); }
       body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li > a:focus,
       body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li.active > a,
