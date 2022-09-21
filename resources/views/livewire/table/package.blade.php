@@ -7,6 +7,18 @@
                         AWB
                         @include('components.sort-icon', ['field' => 'tracking_no'])
                     </a></th>
+                <th><a wire:click.prevent="sortBy('manifest.transitDestination.name')" role="button" href="#">
+                        Tujuan Lintas
+                        @include('components.sort-icon', ['field' => 'manifest.transitDestination.name'])
+                    </a></th>
+                <th><a wire:click.prevent="sortBy('manifest.packageDestination.name')" role="button" href="#">
+                        Tujuan Barang
+                        @include('components.sort-icon', ['field' => 'manifest.packageDestination.name'])
+                    </a></th>
+                <th><a wire:click.prevent="sortBy('invoice.sender.name')" role="button" href="#">
+                        Pengirim
+                        @include('components.sort-icon', ['field' => 'invoice.sender.name'])
+                    </a></th>
                 <th><a wire:click.prevent="sortBy('recipient')" role="button" href="#">
                         Penerima
                         @include('components.sort-icon', ['field' => 'recipient'])
@@ -45,18 +57,21 @@
             @foreach ($packages as $package)
                 <tr x-data="window.__controller.dataTableController({{ $package->id }})">
                     <td class="whitespace-no-wrap row-action--icon">
-                        <a role="button" href="/user/edit/{{ $package->id }}" class="mr-3"><i
+                        <a role="button" href="/user/edit/{{ $package->id }}" class="ml-2"><i
                                 class="fa fa-16px fa-pen"></i></a>
-                        <a role="button" x-on:click.prevent="deleteItem" href="#"><i
-                                class="fa fa-16px fa-trash text-red-500"></i></a>
+                        {{-- <a role="button" x-on:click.prevent="deleteItem" href="#"><i
+                                class="fa fa-16px fa-trash text-red-500"></i></a> --}}
                     </td>
                     <td>{{ $package->tracking_no }}</td>
+                    <td>{{ $package->manifest->transitDestination->name }}</td>
+                    <td>{{ $package->manifest->packageDestination->name }}</td>
+                    <td>{{ $package->invoice->sender->name }}</td>
                     <td>{{ $package->recipient }}</td>
                     <td>{{ $package->quantity }}</td>
                     <td>{{ $package->weight }}</td>
                     <td>{{ $package->volume }}</td>
                     <td>{{ $package->type }}</td>
-                    <td>{{ $package->cod }}</td>
+                    <td>@money($package->cod)</td>
                     <td>{{ $package->description }}</td>
                     <td>{{ $package->created_at->format('d M Y H:i') }}</td>
                 </tr>

@@ -22,4 +22,16 @@ class Package extends Model
             ->orWhere('cost', 'like', '%'.$query.'%')
             ;
     }
+
+
+    // Relationships
+    public function manifest()
+    {
+        return $this->belongsTo(Manifest::class);
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
 }

@@ -29,9 +29,22 @@ trait WithDataTable
                 break;
 
             case 'package':
-                $packages = $this->model::search($this->search)
-                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                    ->paginate($this->perPage);
+                $sortFieldArr =  explode('.', $this->sortField);
+                $sortAsc = $this->sortAsc ? 'asc' : 'desc';
+
+                $packages = $this->model::search($this->search);
+
+                if (count($sortFieldArr) === 3) {
+                    $packages = $packages->with([$sortFieldArr[0] => function ($query) use ($sortFieldArr, $sortAsc) {
+                        $query->with([$sortFieldArr[1] => function ($query) use ($sortFieldArr, $sortAsc) {
+                            $query->orderBy($sortFieldArr[2], $sortAsc);
+                        }]);
+                    }]);
+                } else {
+                    $packages = $packages->orderBy($this->sortField, $sortAsc);
+                }
+
+                $packages = $packages->paginate($this->perPage);
 
                 return [
                     "view" => 'livewire.table.package',
