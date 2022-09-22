@@ -3,6 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Package;
+use App\Models\Sender;
+use App\Models\TransitDestination;
+use App\Models\PackageDestination;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
@@ -72,6 +75,15 @@ class CreatePackage extends Component
 
     public function render()
     {
-        return view('livewire.create-package');
+        return view('livewire.create-package', [
+            'senders' => Sender::all(),
+            'transitDestinations' => TransitDestination::all(),
+            'packageDestinations' => collect(new PackageDestination),
+        ]);
+    }
+
+    public function dehydrate()
+    {
+        $this->dispatchBrowserEvent('initScripts');
     }
 }

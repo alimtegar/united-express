@@ -52,7 +52,7 @@ trait WithDataTable
                     "data" => array_to_object([
                         'href' => [
                             'create_new' => route('packages.create'),
-                            'create_new_text' => 'Tambah Barang',
+                            'create_new_text' => 'Input Barang',
                             'export' => '#',
                             'export_text' => 'Export'
                         ]

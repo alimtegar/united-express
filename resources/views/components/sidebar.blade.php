@@ -10,7 +10,7 @@ $links = [
         'href' => [
             [
                 'section_text' => 'Barang',
-                'section_list' => [['href' => 'packages.index', 'text' => 'Daftar Barang'], ['href' => 'packages.create', 'text' => 'Tambah Barang']],
+                'section_list' => [['href' => 'packages.index', 'text' => 'Daftar Barang'], ['href' => 'packages.create', 'text' => 'Input Barang']],
             ],
         ],
         'text' => 'Barang',
@@ -39,7 +39,8 @@ $navigation_links = array_to_object($links);
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">
-                <img class="d-inline-block" width="32px" height="30.61px" src="" alt="">
+            UNX
+                {{-- <img class="d-inline-block" width="32px" height="30.61px" src="" alt=""> --}}
             </a>
         </div>
         @foreach ($navigation_links as $link)

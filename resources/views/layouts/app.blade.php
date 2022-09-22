@@ -11,6 +11,8 @@
             {{ $meta }}
         @endisset
 
+        @stack('head')
+
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@400;600;700&family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -77,6 +79,8 @@
 
         <livewire:scripts />
         {{-- <script src="{{ mix('js/app.js') }}" defer></script> --}}
+
+        @stack('scripts')
 
         @isset($script)
             {{ $script }}
