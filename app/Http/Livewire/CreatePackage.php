@@ -15,21 +15,29 @@ class CreatePackage extends Component
     public $packageId;
     public $action;
     public $button;
+    protected $packageDestinations;
 
     protected function getRules()
     {
-        $rules = ($this->action == "updatePackage") ? [
-            'package.email' => 'required|email|unique:packages,email,' . $this->packageId
-        ] : [
-            'package.password' => 'required|min:8|confirmed',
-            'package.password_confirmation' => 'required' // livewire need this
+        return [
+            'package.tracking_no' => 'required|unique:packages,tracking_no|numeric',
+            'package.sender_id' => 'required|exists:senders,id|string',
+            'package.recipient' => 'required|string',
+            'package.transit_destination_id' => 'required|exists:transit_destinations,id|string',
+            'package.package_destination_id' => 'required|exists:package_destinations,id|string',
+            'package.quantity' => 'required|numeric',
+            'package.weight' => 'required|numeric',
+            'package.volume' => 'nullable|numeric',
+            'package.type' => 'nullable|in:P,D|string',
+            'package.cod' => 'nullable|numeric',
+            'package.description' => 'nullable|string',
         ];
+    }
 
-        return array_merge([
-            'package.tracking_no' => 'required|unique:packages,tracking_no|numeric|min_digits:6',
-            'package.sender' => 'required|string',
-            'package.email' => 'required|email|unique:packages,email'
-        ], $rules);
+    public function getPackageDestinations() {
+        $this->packageDestinations = !empty($this->package['transit_destination_id']) 
+            ? PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->get() 
+            : null;
     }
 
     public function createPackage()
@@ -70,6 +78,8 @@ class CreatePackage extends Component
             $this->package = Package::find($this->packageId);
         }
 
+        $this->getPackageDestinations();
+
         $this->button = create_button($this->action, "package");
     }
 
@@ -78,8 +88,12 @@ class CreatePackage extends Component
         return view('livewire.create-package', [
             'senders' => Sender::all(),
             'transitDestinations' => TransitDestination::all(),
-            'packageDestinations' => collect(new PackageDestination),
+            // 'packageDestinations' => collect(new PackageDestination),
         ]);
+    }
+
+    public function updated() {
+        $this->getPackageDestinations();
     }
 
     public function dehydrate()

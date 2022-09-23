@@ -11,7 +11,7 @@
             {{ $meta }}
         @endisset
 
-        @stack('head')
+        @stack('styles')
 
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@400;600;700&family=Open+Sans&display=swap" rel="stylesheet">

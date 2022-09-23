@@ -1,6 +1,5 @@
-@push('head')
+@push('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endpush
 
 <div id="form-create">
@@ -21,13 +20,11 @@
             </div>
 
             <div class="form-group col-span-12 sm:col-span-6">
-                {{-- Ketik dan Enter pengirim baru jika tidak ada dalam daftar --}}
                 <x-jet-label for="sender_id" value="Pengirim"/>
-                {{-- <x-jet-input id="sender_id" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="package.sender_id" /> --}}
-                <select id="sender_id" class="select2 w-full" name="sender_id">
+                <select id="sender_id" class="select2 w-full" name="package.sender_id">
                     <option></option>
                     @foreach($senders as $sender)
-                        <option value="{{ $sender->id }}">{{ $sender->name }}</option>
+                        <option value="{{ $sender->id }}" {!! !empty($this->package['sender_id']) && $this->package['sender_id'] == $sender->id ? 'selected' : '' !!}>{{ $sender->name }}</option>
                     @endforeach
                 </select>
                 <x-jet-input-error for="package.sender_id" class="mt-2" />
@@ -41,11 +38,10 @@
 
             <div class="form-group col-span-12 sm:col-span-6">
                 <x-jet-label for="transit_destination_id" value="Tujuan Lintas" />
-                {{-- <x-jet-input id="transit_destination_id" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="package.transit_destination_id" /> --}}
-                <select id="transit_destination_id" class="select2 w-full" name="transit_destination_id">
+                <select id="transit_destination_id" class="select2 w-full" name="package.transit_destination_id">
                     <option></option>
                     @foreach($transitDestinations as $transitDestination)
-                        <option value="{{ $transitDestination->id }}">{{ $transitDestination->name }}</option>
+                        <option value="{{ $transitDestination->id }}" {!! !empty($this->package['transit_destination_id']) && $this->package['transit_destination_id'] == $transitDestination->id ? 'selected' : '' !!}>{{ $transitDestination->name }}</option>
                     @endforeach
                 </select>
                 <x-jet-input-error for="package.transit_destination_id" class="mt-2" />
@@ -53,12 +49,13 @@
 
             <div class="form-group col-span-12 sm:col-span-6">
                 <x-jet-label for="package_destination_id" value="Tujuan Barang" help="Pilih tujuan lintas terlebih dahulu" />
-                {{-- <x-jet-input id="package_destination_id" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="package.package_destination_id" /> --}}
-                <select id="package_destination_id" class="select2 w-full" name="package_destination_id">
-                    @foreach($packageDestinations as $packageDestination)
-                        <option></option>
-                        <option value="{{ $packageDestination->id }}">{{ $packageDestination->name }}</option>
-                    @endforeach
+                <select id="package_destination_id" class="select2 w-full" name="package.package_destination_id">
+                    @if(!empty($this->packageDestinations))
+                        @foreach($this->packageDestinations as $packageDestination)
+                            <option></option>
+                            <option value="{{ $packageDestination->id }}" {!! !empty($this->package['package_destination_id']) && $this->package['package_destination_id'] == $packageDestination->id ? 'selected' : '' !!}>{{ $packageDestination->name }}</option>
+                        @endforeach
+                    @endif
                 </select>
                 <x-jet-input-error for="package.package_destination_id" class="mt-2" />
             </div>
@@ -83,11 +80,10 @@
 
             <div class="form-group col-span-12 sm:col-span-3">
                 <x-jet-label for="type" value="Jenis" help="Opsional" />
-                {{-- <x-jet-input id="type" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="package.type" /> --}}
-                <select id="type" class="select2 w-full" name="type">
+                <select id="type" class="select2 w-full" name="package.type">
                     <option></option>
-                    <option value="P">Parsel</option>
-                    <option value="D">Dokumen</option>
+                    <option value="P" {!! !empty($this->package['type']) && $this->package['type'] == 'P' ? 'selected' : '' !!}>Parsel</option>
+                    <option value="D" {!! !empty($this->package['type']) && $this->package['type'] == 'D' ? 'selected' : '' !!}>Dokumen</option>
                 </select>
                 <x-jet-input-error for="package.type" class="mt-2" />
             </div>
@@ -126,54 +122,56 @@
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function() {
-        function initScripts() {
-            var transitDestSelect2 = $('#transit_destination_id');
-            var packageDestSelect2 = $('#package_destination_id');
-            var packageDestSelect2Config = {
-                placeholder: 'Pilih tujuan barang',
-                allowClear: true,
-            };
+    document.addEventListener('livewire:load', function() {
+        $(document).ready(function() {
+            // Initialize scripts when Livewire rehydrate
+            $(window).on('initScripts', initScripts);
 
-            $('#sender_id').select2({
-                placeholder: 'Pilih pengirim',
-                allowClear: true,
-            });
-            transitDestSelect2.select2({
-                placeholder: 'Pilih tujuan lintas',
-                allowClear: true,
-            });
-            packageDestSelect2.select2(packageDestSelect2Config);
-            $('#type').select2({
-                placeholder: 'Pilih jenis',
-                allowClear: true,
-            });
+            function initScripts() {
+                var transitDestSelect2Elem = $('#transit_destination_id');
+                var packageDestSelect2Elem = $('#package_destination_id');
+                
+                var packageDestSelect2ElemConfig = {
+                    placeholder: 'Pilih tujuan barang',
+                    allowClear: true,
+                };
 
-            transitDestSelect2.on('select2:select', function (e) {
-                var selectedTransitDestId = e.params.data.id;
-        
-                packageDestSelect2.empty();
-                packageDestSelect2.select2({
-                    ...packageDestSelect2Config,
-                    ajax: {
-                        url: `{{ route('package-destinations.index') }}?transit_destination_id=${selectedTransitDestId}`,
-                        dataType: 'json',
-                        processResults: function (data) {
-                            return {
-                                results: $.map(data, function(obj) {
-                                    return { id: obj.id, text: obj.name };
-                                })
-                            };
-                        }
-                    },
+                $('#sender_id').select2({
+                    placeholder: 'Pilih pengirim',
+                    allowClear: true,
                 });
-            });
-        }
+                transitDestSelect2Elem.select2({
+                    placeholder: 'Pilih tujuan lintas',
+                    allowClear: true,
+                });
+                packageDestSelect2Elem.select2(packageDestSelect2ElemConfig);
+                $('#type').select2({
+                    placeholder: 'Pilih jenis',
+                    allowClear: true,
+                });
 
-        initScripts();
+                // Set Livewire variable on Select2 select
+                $('.select2').on('select2:select', function (e) {
+                    var name = e.target.name;
+                    var selectedId = e.params.data.id;
 
-        window.addEventListener('initScripts', initScripts);
+                    @this.set(name, selectedId);
+                });        
+
+                // Set Livewire variable on Select2 select
+                $('.select2').on('select2:unselecting', function (e) {
+                    var name = e.target.name;
+
+                    @this.set(name, null);
+                });        
+            }
+
+            initScripts();
+        });
+
+        
     });
 </script>
 @endpush

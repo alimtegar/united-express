@@ -26,7 +26,7 @@ textarea.form-control {
     background-color: #fdfdff;
     border-color: #e4e6fc;
     font-size: 14px;
-    padding: 7px 15px;
+    /* padding: 7px 15px; */
     height: 42px;
 }
 
@@ -50,6 +50,11 @@ textarea.form-control {
     width: 38px;
     top: 0;
     right: 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    height: 42px;
+    margin-right: 38px;
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
