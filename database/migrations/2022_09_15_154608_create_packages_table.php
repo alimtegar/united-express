@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('manifest_id')->constrained();
-            $table->foreignId('invoice_id')->constrained();
+            $table->foreignId('manifest_id')->nullable()->constrained();
+            $table->foreignId('invoice_id')->nullable()->constrained();
             $table->integer('tracking_no')->unique();
             $table->string('recipient');
             $table->integer('quantity');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('type', ['P', 'D'])->nullable(); // P = Parcel, D = Document
             $table->integer('cod')->nullable();
             $table->text('description')->nullable();
-            $table->integer('cost');
+            $table->integer('cost')->nullable();
             $table->timestamps();
         });
     }

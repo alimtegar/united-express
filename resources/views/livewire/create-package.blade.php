@@ -126,8 +126,15 @@
 <script>
     document.addEventListener('livewire:load', function() {
         $(document).ready(function() {
+            $('#tracking_no').focus();
+
             // Initialize scripts when Livewire rehydrate
             $(window).on('initScripts', initScripts);
+            $(document).on('livewire:mount', function() {console.log('mount')})
+            $(document).on('livewire:hydrate', function() {console.log('hydrate')})
+            $(document).on('livewire:dehydrate', function() {console.log('dehydrate')})
+            $(document).on('livewire:updating', function() {console.log('updating')})
+            $(document).on('livewire:updated', function() {console.log('updated')})
 
             function initScripts() {
                 var transitDestSelect2Elem = $('#transit_destination_id');

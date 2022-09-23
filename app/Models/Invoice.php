@@ -9,6 +9,21 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'sender_id',
+        'quantity',
+        'weight',
+        'volume',
+        'type',
+        'cod',
+        'cost',
+    ];
+
     // Relationships
     public function packages()
     {

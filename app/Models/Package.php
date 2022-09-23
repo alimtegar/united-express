@@ -10,6 +10,25 @@ class Package extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'manifest_id',
+        'invoice_id',
+        'tracking_no',
+        'recipient',
+        'quantity',
+        'weight',
+        'volume',
+        'type',
+        'cod',
+        'description',
+        'cost',
+    ];
+
+    /**
      * Search query in multiple whereOr
      */
     public static function search($query)

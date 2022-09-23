@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Package;
+use App\Models\Manifest;
+use App\Models\Invoice;
 use App\Models\Sender;
 use App\Models\TransitDestination;
 use App\Models\PackageDestination;
@@ -45,14 +47,70 @@ class CreatePackage extends Component
         $this->resetErrorBag();
         $this->validate();
 
-        $password = $this->package['password'];
+        $package = Package::create($this->package);
 
-        if (!empty($password)) {
-            $this->package['password'] = Hash::make($password);
+        $manifest_invoice = array_diff_key($this->package, array_flip(['tracking_no', 'recipient', 'type', 'description']));
+        // $manifest = array_diff_key($manifest_invoice, array_flip(['sender_id']));
+        // $invoice = array_diff_key($manifest_invoice, array_flip(['transit_destination_id', 'package_destination_id']));
+
+        // Create or update manifest
+        $currentMonthManifest = Manifest::query()
+            ->where('transit_destination_id', $manifest_invoice['transit_destination_id'])
+            ->where('package_destination_id', $manifest_invoice['package_destination_id'])
+            ->whereDay('created_at', now()->day)
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year);
+
+        // If there's already current month manifest, update it, else, create new one
+        if($currentMonthManifest->count()) {
+            $currentMonthManifest->increment('quantity', $manifest_invoice['quantity']);
+            $currentMonthManifest->increment('weight', $manifest_invoice['weight']);
+            
+            if(!empty($manifest_invoice['volume'])) {
+                $currentMonthManifest->increment('volume', $manifest_invoice['volume']);
+            }
+
+            if(!empty($manifest_invoice['cod'])) {
+                $currentMonthManifest->increment('cod', $manifest_invoice['cod']);
+            }
+
+            if(!empty($manifest_invoice['cost'])) {
+                $currentMonthManifest->increment('cost', $manifest_invoice['cod']);
+            }
+        } else {
+            $currentMonthManifest = Manifest::create($manifest_invoice);
         }
 
-        Package::create($this->package);
+        $package->manifest()->associate($currentMonthManifest);
 
+        // Create or update invoice
+        $senderInvoice = Invoice::query()
+            ->where('sender_id', $manifest_invoice['sender_id'])
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year);
+
+        if($senderInvoice->count()) {
+            $senderInvoice->increment('quantity', $manifest_invoice['quantity']);
+            $senderInvoice->increment('weight', $manifest_invoice['weight']);
+            
+            if(!empty($manifest_invoice['volume'])) {
+                $senderInvoice->increment('volume', $manifest_invoice['volume']);
+            }
+
+            if(!empty($manifest_invoice['cod'])) {
+                $senderInvoice->increment('cod', $manifest_invoice['cod']);
+            }
+
+            if(!empty($manifest_invoice['cost'])) {
+                $senderInvoice->increment('cost', $manifest_invoice['cod']);
+            }
+        } else {
+            $senderInvoice = Invoice::create($manifest_invoice);
+        }
+
+        $package->invoice()->associate($senderInvoice);
+        $package->save();
+        
         $this->emit('saved');
         $this->reset('package');
     }
@@ -93,6 +151,10 @@ class CreatePackage extends Component
     }
 
     public function updated() {
+        $this->getPackageDestinations();
+    }
+
+    public function hydrate() {
         $this->getPackageDestinations();
     }
 

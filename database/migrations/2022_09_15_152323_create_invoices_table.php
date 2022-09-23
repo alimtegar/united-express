@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('weight');
             $table->integer('volume')->nullable();
             $table->integer('cod')->nullable();
-            $table->integer('cost');
+            $table->integer('cost')->nullable();
             $table->timestamps();
         });
     }

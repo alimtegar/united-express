@@ -9,6 +9,22 @@ class Manifest extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'transit_destination_id',
+        'package_destination_id',
+        'quantity',
+        'weight',
+        'volume',
+        'type',
+        'cod',
+        'cost',
+    ];
+
     // Relationships
     public function packages()
     {
