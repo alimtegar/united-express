@@ -1,3 +1,10 @@
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
+
+{{-- {{var_dump($this->name)}} --}}
+
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
         <div class="flex pb-4 -ml-3">
@@ -9,18 +16,36 @@
             </a>
         </div>
 
-        <div class="row mb-4">
-            <div class="col form-inline">
-                Per Page: &nbsp;
-                <select wire:model="perPage" class="form-control" style="width: 72px;">
+        <div class="form-row mb-4">
+            <div class="col-md-2 form-inline">
+                Per Halaman: &nbsp;
+                <select wire:model="perPage" class="form-control flex-grow-1">
                     <option>10</option>
                     <option>15</option>
                     <option>25</option>
                 </select>
             </div>
 
-            <div class="col">
-                <input wire:model="search" class="form-control" type="text" placeholder="Search...">
+            <div class="col"></div>
+
+            {{-- {{var_dump($this->transitDestinationId)}} --}}
+
+            @if($this->name === 'package')
+                <div class="col-md-2 form-inline">
+                    <select name="transitDestinationId" id="transit_destination_id" class="select2 form-control w-100">
+                        <option></option>
+                        @foreach($transitDestinations as $transitDestination)
+                            <option value="{{ $transitDestination->id }}" {!! !empty($this->transitDestinationId) && $this->transitDestinationId == $transitDestination->id ? 'selected' : '' !!}>{{ $transitDestination->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 form-inline">
+                    <input name="createdDate" id="created_date" class="datepicker form-control w-100">
+                </div>
+            @endif
+
+            <div class="col-md-4">
+                <input wire:model="search" class="form-control" type="text" placeholder="Cari...">
             </div>
         </div>
 
@@ -43,3 +68,56 @@
     </div>
 </div>
 
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    document.addEventListener('livewire:load', function() {
+        $(document).ready(function() {
+            function setTZ(date) {
+                return new Date(date.getTime() - (date.getTimezoneOffset() * 60 * 1000));
+            }
+
+            // Initialize scripts when Livewire rehydrate
+            $(window).on('initScripts', initScripts);
+
+            var cretaedDateDatePicker = $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'dd-mm-yyyy',
+                language: 'id',
+            });
+            
+            cretaedDateDatePicker.datepicker('setDate', 'now');
+            cretaedDateDatePicker.on('changeDate', function (e) {
+                var name = e.target.name;
+                var date = setTZ(e.date);
+                
+                @this.set(name, date);
+            });
+
+            function initScripts() {
+                $('#transit_destination_id').select2({
+                    placeholder: 'Pilih jalur lintas',
+                });
+
+                // Set Livewire data on Select2 select
+                $('.select2').on('select2:select', function (e) {
+                    var name = e.target.name;
+                    var selectedId = e.params.data.id;
+
+                    @this.set(name, selectedId);
+                });        
+
+                // Set Livewire data on Select2 select
+                $('.select2').on('select2:unselecting', function (e) {
+                    var name = e.target.name;
+
+                    @this.set(name, null);
+                });
+            }
+
+            initScripts();
+        });        
+    });
+</script>
+@endpush

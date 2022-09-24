@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use \Carbon\Carbon;
 
 trait WithDataTable
 {
@@ -42,6 +43,18 @@ trait WithDataTable
                     }]);
                 } else {
                     $packages = $packages->orderBy($this->sortField, $sortAsc);
+                }
+
+                if(!empty($this->transitDestinationId)) {
+                    $packages = $packages->whereHas('manifest', function ($query) {
+                        return $query->where('transit_destination_id', $this->transitDestinationId);
+                    });
+                }
+
+                if(!empty($this->createdDate)) {
+                    $createdDate = Carbon::parse($this->createdDate)->format('Y-m-d');
+                    
+                    $packages = $packages->whereDate('created_at', $createdDate);
                 }
 
                 $packages = $packages->paginate($this->perPage);

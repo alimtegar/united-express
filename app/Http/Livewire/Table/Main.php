@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Table;
 
+use App\Models\TransitDestination;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Traits\WithDataTable;
@@ -17,6 +18,8 @@ class Main extends Component
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
+    public $transitDestinationId;
+    public $createdDate;
 
     protected $listeners = [ "deleteItem" => "delete_item" ];
 
@@ -31,7 +34,7 @@ class Main extends Component
         $this->sortField = $field;
     }
 
-    public function delete_item ($id)
+    public function delete_item($id)
     {
         $data = $this->model::find($id);
 
@@ -50,10 +53,31 @@ class Main extends Component
         ]);
     }
 
+    public function mount() {
+        $this->createdDate = now();
+    }
+
     public function render()
     {
         $data = $this->get_pagination_data();
 
+        switch ($this->name) {
+            case 'package':
+                $data = array_merge($data, [
+                    'transitDestinations' => TransitDestination::all()->sortBy('name'),
+                ]);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
         return view($data['view'], $data);
+    }
+
+    public function dehydrate()
+    {
+        $this->dispatchBrowserEvent('initScripts');
     }
 }

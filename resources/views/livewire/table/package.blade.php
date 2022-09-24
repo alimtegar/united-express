@@ -1,5 +1,5 @@
 <div>
-    <x-data-table :data="$data" :model="$packages">
+    <x-data-table :data="$data" :model="$packages" :transitDestinations="$transitDestinations">
         <x-slot name="head">
             <tr>
                 <th></th>

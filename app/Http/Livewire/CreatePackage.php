@@ -38,7 +38,7 @@ class CreatePackage extends Component
 
     public function getPackageDestinations() {
         $this->packageDestinations = !empty($this->package['transit_destination_id']) 
-            ? PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->get() 
+            ? PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->orderBy('name')->get() 
             : null;
     }
 
@@ -144,8 +144,8 @@ class CreatePackage extends Component
     public function render()
     {
         return view('livewire.create-package', [
-            'senders' => Sender::all(),
-            'transitDestinations' => TransitDestination::all(),
+            'senders' => Sender::all()->sortBy('name'),
+            'transitDestinations' => TransitDestination::all()->sortBy('name'),
             // 'packageDestinations' => collect(new PackageDestination),
         ]);
     }
