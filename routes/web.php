@@ -28,5 +28,6 @@ Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
     Route::view('/user/edit/{userId}', "pages.user.user-edit")->name('user.edit');
 
     // Package routes
+    Route::get('/packages/img', [PackageController::class, 'image']);
     Route::resource('/packages', PackageController::class);
 });

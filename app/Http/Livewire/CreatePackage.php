@@ -37,8 +37,8 @@ class CreatePackage extends Component
     }
 
     public function getPackageDestinations() {
-        $this->packageDestinations = !empty($this->package['transit_destination_id']) 
-            ? PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->orderBy('name')->get() 
+        $this->packageDestinations = !empty($this->package['transit_destination_id'])
+            ? PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->orderBy('name')->get()
             : null;
     }
 
@@ -65,7 +65,7 @@ class CreatePackage extends Component
         if($currentMonthManifest->count()) {
             $currentMonthManifest->increment('quantity', $manifest_invoice['quantity']);
             $currentMonthManifest->increment('weight', $manifest_invoice['weight']);
-            
+
             if(!empty($manifest_invoice['volume'])) {
                 $currentMonthManifest->increment('volume', $manifest_invoice['volume']);
             }
@@ -77,6 +77,8 @@ class CreatePackage extends Component
             if(!empty($manifest_invoice['cost'])) {
                 $currentMonthManifest->increment('cost', $manifest_invoice['cod']);
             }
+
+            $currentMonthManifest = $currentMonthManifest->first();
         } else {
             $currentMonthManifest = Manifest::create($manifest_invoice);
         }
@@ -92,7 +94,7 @@ class CreatePackage extends Component
         if($senderInvoice->count()) {
             $senderInvoice->increment('quantity', $manifest_invoice['quantity']);
             $senderInvoice->increment('weight', $manifest_invoice['weight']);
-            
+
             if(!empty($manifest_invoice['volume'])) {
                 $senderInvoice->increment('volume', $manifest_invoice['volume']);
             }
@@ -104,13 +106,15 @@ class CreatePackage extends Component
             if(!empty($manifest_invoice['cost'])) {
                 $senderInvoice->increment('cost', $manifest_invoice['cod']);
             }
+
+            $senderInvoice = $senderInvoice->first();
         } else {
             $senderInvoice = Invoice::create($manifest_invoice);
         }
 
         $package->invoice()->associate($senderInvoice);
         $package->save();
-        
+
         $this->emit('saved');
         $this->reset('package');
     }

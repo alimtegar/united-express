@@ -45,7 +45,7 @@
             @endif
 
             <div class="col-md-4">
-                <input wire:model="search" class="form-control" type="text" placeholder="Cari...">
+                <input wire:model="search" class="form-control" type="text" placeholder="Cari barang..">
             </div>
         </div>
 

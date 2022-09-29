@@ -57,7 +57,7 @@
             @foreach ($packages as $package)
                 <tr x-data="window.__controller.dataTableController({{ $package->id }})">
                     <td class="whitespace-no-wrap row-action--icon">
-                        <a role="button" href="/user/edit/{{ $package->id }}" class="ml-2"><i
+                        <a role="button" href="/user/edit/{{ $package->id }}"><i
                                 class="fa fa-16px fa-pen"></i></a>
                         {{-- <a role="button" x-on:click.prevent="deleteItem" href="#"><i
                                 class="fa fa-16px fa-trash text-red-500"></i></a> --}}
