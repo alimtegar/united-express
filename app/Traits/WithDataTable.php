@@ -53,7 +53,7 @@ trait WithDataTable
 
                 if(!empty($this->createdDate)) {
                     $createdDate = Carbon::parse($this->createdDate)->format('Y-m-d');
-                    
+
                     $packages = $packages->whereDate('created_at', $createdDate);
                 }
 
@@ -67,9 +67,11 @@ trait WithDataTable
                             'create_new' => route('packages.create'),
                             'create_new_text' => 'Input Barang',
                             'export' => '#',
-                            'export_text' => 'Export'
-                        ]
-                    ])
+                            'export_text' => 'Export',
+                            'export_image' => route('packages.image', ['transit_destination_id' => $this->transitDestinationId, 'created_date' => $createdDate]),
+                            'export_image_text' => 'Download File Gambar',
+                        ],
+                    ]),
                 ];
                 break;
 

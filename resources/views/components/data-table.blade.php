@@ -7,12 +7,24 @@
 
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
-        <div class="flex pb-4 -ml-3">
+        <div class="flex justify-content-between pb-4 -ml-3">
+            <div>
+                {{-- <a href="{{ $data->href->export }}" class="ml-2 btn btn-outline-success shadow-none">
+                    <span class="fas fa-sm fa-file-export"></span> {{ $data->href->export_text }}
+                </a> --}}
+                <a href="{{ $data->href->export_image }}" class="mr-2 btn btn-outline-primary shadow-none{{!empty($this->transitDestinationId) && !empty($this->createdDate) ? '' : ' disabled'}}">
+                    <span class="fas fa-sm fa-download"></span> {{ $data->href->export_image_text }}
+                </a>
+                @if(empty($this->transitDestinationId) || empty($this->createdDate))
+                <div class="form-group d-inline-flex mb-0">
+                    <span class="control-label">
+                        <small>Pilih tujuan lintas dan tanggal dahulu untuk men-download file</small>
+                    </span>
+                </div>
+                @endif
+            </div>
             <a href="{{ $data->href->create_new }}"  class="-ml- btn btn-primary shadow-none">
                 <span class="fas fa-sm fa-plus"></span> {{ $data->href->create_new_text }}
-            </a>
-            <a href="{{ $data->href->export }}" class="ml-2 btn btn-success shadow-none">
-                <span class="fas fa-sm fa-file-export"></span> {{ $data->href->export_text }}
             </a>
         </div>
 
@@ -86,18 +98,19 @@
                 format: 'dd-mm-yyyy',
                 language: 'id',
             });
-            
+
             cretaedDateDatePicker.datepicker('setDate', 'now');
             cretaedDateDatePicker.on('changeDate', function (e) {
                 var name = e.target.name;
                 var date = setTZ(e.date);
-                
+
                 @this.set(name, date);
             });
 
             function initScripts() {
                 $('#transit_destination_id').select2({
-                    placeholder: 'Pilih jalur lintas',
+                    placeholder: 'Pilih tujuan lintas',
+                    allowClear: true,
                 });
 
                 // Set Livewire data on Select2 select
@@ -106,7 +119,7 @@
                     var selectedId = e.params.data.id;
 
                     @this.set(name, selectedId);
-                });        
+                });
 
                 // Set Livewire data on Select2 select
                 $('.select2').on('select2:unselecting', function (e) {
@@ -117,7 +130,7 @@
             }
 
             initScripts();
-        });        
+        });
     });
 </script>
 @endpush
