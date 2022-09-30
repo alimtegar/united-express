@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class InvoiceSeeder extends Seeder
 {
@@ -23,6 +24,8 @@ class InvoiceSeeder extends Seeder
             'weight' => 26,
             'cod' => 550000,
             'cost' => 100000,
+            'created_at' => Carbon::now()->format('Y-m-d'),
+            'updated_at' => Carbon::now()->format('Y-m-d')
         ]);
     }
 }

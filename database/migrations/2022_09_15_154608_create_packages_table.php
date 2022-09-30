@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('manifest_id')->nullable()->constrained();
             $table->foreignId('invoice_id')->nullable()->constrained();
+            $table->foreignId('package_destination_id')->nullable()->constrained();
             $table->integer('tracking_no')->unique();
             $table->string('recipient');
             $table->integer('quantity');

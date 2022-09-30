@@ -3,8 +3,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 
-{{-- {{var_dump($this->name)}} --}}
-
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
         <div class="flex justify-content-between pb-4 -ml-3">
@@ -39,8 +37,6 @@
             </div>
 
             <div class="col"></div>
-
-            {{-- {{var_dump($this->transitDestinationId)}} --}}
 
             @if($this->name === 'package')
                 <div class="col-md-2 form-inline">

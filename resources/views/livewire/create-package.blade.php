@@ -24,7 +24,14 @@
                 <select id="sender_id" class="select2 w-full" name="package.sender_id">
                     <option></option>
                     @foreach($senders as $sender)
-                        <option value="{{ $sender->id }}" {!! !empty($this->package['sender_id']) && $this->package['sender_id'] == $sender->id ? 'selected' : '' !!}>{{ $sender->name }}</option>
+                        <option value="{{ $sender->id }}" {!!
+                            (!empty($this->package->invoice->sender_id) && $this->package->invoice->sender_id == $sender->id) ||
+                            (!empty($this->package['sender_id']) && $this->package['sender_id'] == $sender->id)
+                                ? 'selected'
+                                : ''
+                        !!}>
+                            {{ $sender->name }}
+                        </option>
                     @endforeach
                 </select>
                 <x-jet-input-error for="package.sender_id" class="mt-2" />
@@ -41,7 +48,14 @@
                 <select id="transit_destination_id" class="select2 w-full" name="package.transit_destination_id">
                     <option></option>
                     @foreach($transitDestinations as $transitDestination)
-                        <option value="{{ $transitDestination->id }}" {!! !empty($this->package['transit_destination_id']) && $this->package['transit_destination_id'] == $transitDestination->id ? 'selected' : '' !!}>{{ $transitDestination->name }}</option>
+                        <option value="{{ $transitDestination->id }}" {!!
+                                (!empty($this->package->manifest->transit_destination_id) && $this->package->manifest->transit_destination_id == $transitDestination->id) ||
+                                (!empty($this->package['transit_destination_id']) && $this->package['transit_destination_id'] == $transitDestination->id)
+                                    ? 'selected'
+                                    : ''
+                        !!}>
+                            {{ $transitDestination->name }}
+                        </option>
                     @endforeach
                 </select>
                 <x-jet-input-error for="package.transit_destination_id" class="mt-2" />
@@ -53,7 +67,14 @@
                     @if(!empty($this->packageDestinations))
                         @foreach($this->packageDestinations as $packageDestination)
                             <option></option>
-                            <option value="{{ $packageDestination->id }}" {!! !empty($this->package['package_destination_id']) && $this->package['package_destination_id'] == $packageDestination->id ? 'selected' : '' !!}>{{ $packageDestination->name }}</option>
+                            <option value="{{ $packageDestination->id }}" {!!
+                                (!empty($this->package->package_destination_id) && $this->package->package_destination_id == $packageDestination->id) ||
+                                (!empty($this->package['package_destination_id']) && $this->package['package_destination_id'] == $packageDestination->id)
+                                    ? 'selected'
+                                    : ''
+                            !!}>
+                                {{ $packageDestination->name }}
+                            </option>
                         @endforeach
                     @endif
                 </select>
@@ -113,8 +134,7 @@
             </x-jet-action-message>
 
             <x-jet-button>
-                {{-- {{ __($button['submit_text']) }} --}}
-                Input Barang
+                {{ __($button['submit_text']) }}
             </x-jet-button>
         </x-slot>
     </x-jet-form-section>
@@ -129,7 +149,7 @@
         $(document).ready(function() {
             $('#tracking_no').focus();
 
-            // Scroll to top and focus to the first text input on saved
+            // Scroll to top and focus on the first text input when Livewire 'saved' event emitted
             Livewire.on('saved', function() {
                 $('#tracking_no').focus();
                 $('html, body').animate({ scrollTop: 0 }, 'slow');

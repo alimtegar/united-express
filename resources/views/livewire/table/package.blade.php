@@ -57,14 +57,14 @@
             @foreach ($packages as $package)
                 <tr x-data="window.__controller.dataTableController({{ $package->id }})">
                     <td class="whitespace-no-wrap row-action--icon">
-                        <a role="button" href="/user/edit/{{ $package->id }}"><i
+                        <a role="button" href="{{ route('packages.edit', ['package' => $package->id]) }}"><i
                                 class="fa fa-16px fa-pen"></i></a>
                         {{-- <a role="button" x-on:click.prevent="deleteItem" href="#"><i
                                 class="fa fa-16px fa-trash text-red-500"></i></a> --}}
                     </td>
                     <td>{{ $package->tracking_no }}</td>
                     <td>{{ $package->manifest->transitDestination->name }}</td>
-                    <td>{{ $package->manifest->packageDestination->name }}</td>
+                    <td>{{ $package->packageDestination->name }}</td>
                     <td>{{ $package->invoice->sender->name }}</td>
                     <td>{{ $package->recipient }}</td>
                     <td>{{ $package->quantity }}</td>

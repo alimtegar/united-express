@@ -53,4 +53,9 @@ class Package extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
+
+    public function packageDestination()
+    {
+        return $this->belongsTo(PackageDestination::class);
+    }
 }

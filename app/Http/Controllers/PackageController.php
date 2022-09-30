@@ -66,7 +66,9 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        return view('pages.packages.edit', [
+            'user' => User::class,
+        ]);
     }
 
     /**

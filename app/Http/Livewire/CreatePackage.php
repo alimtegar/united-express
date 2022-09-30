@@ -37,9 +37,11 @@ class CreatePackage extends Component
     }
 
     public function getPackageDestinations() {
-        $this->packageDestinations = !empty($this->package['transit_destination_id'])
-            ? PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->orderBy('name')->get()
-            : null;
+        if (!empty($this->package['transit_destination_id'])) {
+            $this->packageDestinations = PackageDestination::where('transit_destination_id', $this->package['transit_destination_id'])->orderBy('name')->get();
+        } else if (!empty($this->package->manifest->transit_destination_id)) {
+            $this->packageDestinations = PackageDestination::where('transit_destination_id', $this->package->manifest->transit_destination_id)->orderBy('name')->get();
+        }
     }
 
     public function createPackage()
@@ -49,14 +51,16 @@ class CreatePackage extends Component
 
         $package = Package::create($this->package);
 
-        $manifest_invoice = array_diff_key($this->package, array_flip(['tracking_no', 'recipient', 'type', 'description']));
+        $packageDestination = PackageDestination::find($this->package['package_destination_id']);
+        $package->packageDestination()->associate($packageDestination);
+
+        $manifest_invoice = array_diff_key($this->package, array_flip(['package_destination_id', 'tracking_no', 'recipient', 'type', 'description']));
         // $manifest = array_diff_key($manifest_invoice, array_flip(['sender_id']));
         // $invoice = array_diff_key($manifest_invoice, array_flip(['transit_destination_id', 'package_destination_id']));
 
         // Create or update manifest
         $currentMonthManifest = Manifest::query()
             ->where('transit_destination_id', $manifest_invoice['transit_destination_id'])
-            ->where('package_destination_id', $manifest_invoice['package_destination_id'])
             ->whereDay('created_at', now()->day)
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year);
@@ -127,8 +131,15 @@ class CreatePackage extends Component
         Package::query()
             ->where('id', $this->packageId)
             ->update([
-                "name" => $this->package->name,
-                "email" => $this->package->email,
+                'tracking_no' => $this->package->name,
+                'recipient' => $this->package->recipient,
+                'quantity' => $this->package->quantity,
+                'weight' => $this->package->weight,
+                'volume' => $this->package->volume,
+                'type' => $this->package->type,
+                'cod' => $this->package->cod,
+                'description' => $this->package->description,
+                'cost' => $this->package->cost,
             ]);
 
         $this->emit('saved');

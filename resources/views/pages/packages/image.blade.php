@@ -104,7 +104,7 @@ if (count($packages)) {
                     <td class="text-center">{{$package->weight}}</td>
                     <td class="text-center">{{$package->volume}}</td>
                     <td class="text-center">{{$package->type}}</td>
-                    <td>{{$package->manifest->packageDestination->name}}</td>
+                    <td>{{$package->packageDestination->name}}</td>
                     <td>@money($package->cod)</td>
                     <td>{{$package->description}}</td>
                 <tr>

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('manifests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transit_destination_id')->constrained();
-            $table->foreignId('package_destination_id')->constrained();
             $table->integer('quantity');
             $table->integer('weight');
             $table->integer('volume')->nullable();

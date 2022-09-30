@@ -10,7 +10,7 @@ class PackageDestination extends Model
     use HasFactory;
 
     // Relationships
-    public function manifests()
+    public function packages()
     {
         return $this->hasMany(Manifest::class);
     }

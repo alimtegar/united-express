@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transit_destination_id')->constrained();
             $table->string('name');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

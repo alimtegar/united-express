@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transit_destinations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

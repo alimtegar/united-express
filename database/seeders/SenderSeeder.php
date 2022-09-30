@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SenderSeeder extends Seeder
 {
@@ -17,6 +18,8 @@ class SenderSeeder extends Seeder
     {
         DB::table('senders')->insert([
             'name' => 'KP Express',
+            'created_at' => Carbon::now()->format('Y-m-d'),
+            'updated_at' => Carbon::now()->format('Y-m-d')
         ]);
     }
 }

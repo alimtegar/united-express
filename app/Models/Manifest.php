@@ -35,9 +35,4 @@ class Manifest extends Model
     {
         return $this->belongsTo(TransitDestination::class);
     }
-
-    public function packageDestination()
-    {
-        return $this->belongsTo(PackageDestination::class);
-    }
 }
