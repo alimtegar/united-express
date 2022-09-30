@@ -95,16 +95,16 @@ class PackageController extends Controller
     public function image(Request $request) {
         $errorMessages = [];
 
-        $transitDestId = $request->input('transit_destination_id');
-        if (empty($transitDestId)) { $errorMessages[] = 'Tidak ada parameter <strong>transit_destination_id</strong> pada URL'; }
+        $transitDestinationId = $request->input('transit_destination_id');
+        if (empty($transitDestinationId)) { $errorMessages[] = 'Tidak ada parameter <strong>transit_destination_id</strong> pada URL'; }
 
         $createdDate = $request->input('created_date');
         if (empty($createdDate)) { $errorMessages[] = 'Tidak ada parameter <strong>created_date</strong> pada URL'; }
         $createdDate = Carbon::parse($createdDate)->format('Y-m-d');
 
         $packages = Package::query()
-            ->whereHas('manifest', function ($query) use ($transitDestId) {
-                return $query->where('transit_destination_id', $transitDestId);
+            ->whereHas('manifest', function ($query) use ($transitDestinationId) {
+                return $query->where('transit_destination_id', $transitDestinationId);
             })
             ->whereDate('created_at', $createdDate)
             ->get();

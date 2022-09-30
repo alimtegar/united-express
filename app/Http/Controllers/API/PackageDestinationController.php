@@ -10,9 +10,9 @@ class PackageDestinationController extends Controller
 {
     public function index(Request $request)
     {
-        $transitDestId = $request->input('transit_destination_id');
+        $transitDestinationId = $request->input('transit_destination_id');
 
-        $banks = PackageDestination::where('transit_destination_id', $transitDestId)->get();
+        $banks = PackageDestination::where('transit_destination_id', $transitDestinationId)->get();
 
         return response()->json($banks, 200);
     }

@@ -15,12 +15,12 @@ class ManifestSeeder extends Seeder
      */
     public function run()
     {
-        $transitDestId = DB::table('transit_destinations')->first()->id;
-        $packageDestId = DB::table('package_destinations')->first()->id;
+        $transitDestinationId = DB::table('transit_destinations')->first()->id;
+        $packageDestinationId = DB::table('package_destinations')->first()->id;
 
         DB::table('manifests')->insert([
-            'transit_destination_id' => $transitDestId,
-            'package_destination_id' => $packageDestId,
+            'transit_destination_id' => $transitDestinationId,
+            'package_destination_id' => $packageDestinationId,
             'quantity' => 1,
             'weight' => 26,
             'cod' => 550000,

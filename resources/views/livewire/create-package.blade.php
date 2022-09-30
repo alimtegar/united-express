@@ -2,8 +2,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 
-<div id="form-create">
-    <x-jet-form-section :submit="$action" class="mb-4">
+<div id="form-create" class="mb-4">
+    <x-jet-form-section :submit="$action">
         <x-slot name="title">
             Barang
         </x-slot>
@@ -113,7 +113,8 @@
             </x-jet-action-message>
 
             <x-jet-button>
-                {{ __($button['submit_text']) }}
+                {{-- {{ __($button['submit_text']) }} --}}
+                Input Barang
             </x-jet-button>
         </x-slot>
     </x-jet-form-section>
@@ -128,13 +129,20 @@
         $(document).ready(function() {
             $('#tracking_no').focus();
 
+            // Scroll to top and focus to the first text input on saved
+            Livewire.on('saved', function() {
+                $('#tracking_no').focus();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+                return false;
+            });
+
             // Initialize scripts when Livewire rehydrate
             $(window).on('initScripts', initScripts);
 
             function initScripts() {
                 var transitDestSelect2Elem = $('#transit_destination_id');
                 var packageDestSelect2Elem = $('#package_destination_id');
-                
+
                 var packageDestSelect2ElemConfig = {
                     placeholder: 'Pilih tujuan barang',
                     allowClear: true,
@@ -160,18 +168,18 @@
                     var selectedId = e.params.data.id;
 
                     @this.set(name, selectedId);
-                });        
+                });
 
                 // Set Livewire variable on Select2 select
                 $('.select2').on('select2:unselecting', function (e) {
                     var name = e.target.name;
 
                     @this.set(name, null);
-                });        
+                });
             }
 
             initScripts();
-        });        
+        });
     });
 </script>
 @endpush

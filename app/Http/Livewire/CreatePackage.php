@@ -158,6 +158,10 @@ class CreatePackage extends Component
         $this->getPackageDestinations();
     }
 
+    public function updatedPackages() {
+        $this->dispatchBrowserEvent('focusFirstInput');
+    }
+
     public function hydrate() {
         $this->getPackageDestinations();
     }

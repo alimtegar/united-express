@@ -68,8 +68,11 @@ trait WithDataTable
                             'create_new_text' => 'Input Barang',
                             'export' => '#',
                             'export_text' => 'Export',
-                            'export_image' => route('packages.image', ['transit_destination_id' => $this->transitDestinationId, 'created_date' => $createdDate]),
-                            'export_image_text' => 'Download File Gambar',
+                            'export_image' => route('packages.image', [
+                                'transit_destination_id' => $this->transitDestinationId,
+                                'created_date' => $createdDate,
+                            ]),
+                            'export_image_text' => 'Download Manifest',
                         ],
                     ]),
                 ];

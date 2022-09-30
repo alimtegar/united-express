@@ -15,10 +15,10 @@ class PackageDestinationSeeder extends Seeder
      */
     public function run()
     {
-        $transitDestId = DB::table('transit_destinations')->first()->id;
+        $transitDestinationId = DB::table('transit_destinations')->first()->id;
 
         DB::table('package_destinations')->insert([
-            'transit_destination_id' => $transitDestId,
+            'transit_destination_id' => $transitDestinationId,
             'name' => 'Demak',
         ]);
     }
