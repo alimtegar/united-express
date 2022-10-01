@@ -1,3 +1,11 @@
+<?php
+
+$senderId = $this->package['sender_id'] ?? $this->package->invoice->sender_id;
+$transitDestinationId = $this->package['transit_destination_id'] ?? $this->package->invoice->transit_destination_id;
+$packageDestinationId = $this->package['package_destination_id'] ?? $this->package->invoice->package_destination_id;
+
+?>
+
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
@@ -15,7 +23,7 @@
         <x-slot name="form">
             <div class="form-group col-span-12">
                 <x-jet-label for="tracking_no" value="AWB" />
-                <x-jet-input id="tracking_no" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="package.tracking_no" />
+                <x-jet-input id="tracking_no" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="package.tracking_no" disabled="{{ !empty($this->packageId) }}" />
                 <x-jet-input-error for="package.tracking_no" class="mt-2" />
             </div>
 
@@ -25,10 +33,7 @@
                     <option></option>
                     @foreach($senders as $sender)
                         <option value="{{ $sender->id }}" {!!
-                            (!empty($this->package->invoice->sender_id) && $this->package->invoice->sender_id == $sender->id) ||
-                            (!empty($this->package['sender_id']) && $this->package['sender_id'] == $sender->id)
-                                ? 'selected'
-                                : ''
+                            !empty($senderId) && $senderId == $sender->id ? 'selected' : ''
                         !!}>
                             {{ $sender->name }}
                         </option>
@@ -48,12 +53,9 @@
                 <select id="transit_destination_id" class="select2 w-full" name="package.transit_destination_id">
                     <option></option>
                     @foreach($transitDestinations as $transitDestination)
-                        <option value="{{ $transitDestination->id }}" {!!
-                                (!empty($this->package->manifest->transit_destination_id) && $this->package->manifest->transit_destination_id == $transitDestination->id) ||
-                                (!empty($this->package['transit_destination_id']) && $this->package['transit_destination_id'] == $transitDestination->id)
-                                    ? 'selected'
-                                    : ''
-                        !!}>
+                    <option value="{{ $transitDestination->id }}" {!!
+                        !empty($transitDestinationId) && $transitDestinationId == $transitDestination->id ? 'selected' : ''
+                    !!}>
                             {{ $transitDestination->name }}
                         </option>
                     @endforeach
@@ -68,10 +70,7 @@
                         @foreach($this->packageDestinations as $packageDestination)
                             <option></option>
                             <option value="{{ $packageDestination->id }}" {!!
-                                (!empty($this->package->package_destination_id) && $this->package->package_destination_id == $packageDestination->id) ||
-                                (!empty($this->package['package_destination_id']) && $this->package['package_destination_id'] == $packageDestination->id)
-                                    ? 'selected'
-                                    : ''
+                                !empty($packageDestinationId) && $packageDestinationId == $packageDestination->id ? 'selected' : ''
                             !!}>
                                 {{ $packageDestination->name }}
                             </option>
