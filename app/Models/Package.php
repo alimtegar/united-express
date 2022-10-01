@@ -34,11 +34,10 @@ class Package extends Model
     public static function search($query)
     {
         return empty($query) ? static::query()
-            : static::where('sender', 'like', '%'.$query.'%')
+            : static::query()
+            ->where('tracking_no', 'like', '%'.$query.'%')
             ->orWhere('recipient', 'like', '%'.$query.'%')
-            ->orWhere('origin_like', 'like', '%'.$query.'%')
-            ->orWhere('destination_like', 'like', '%'.$query.'%')
-            ->orWhere('cost', 'like', '%'.$query.'%')
+            ->orWhere('description', 'like', '%'.$query.'%')
             ;
     }
 

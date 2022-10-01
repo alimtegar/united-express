@@ -1,8 +1,20 @@
 <?php
 
-$senderId = $this->package['sender_id'] ?? $this->package->invoice->sender_id;
-$transitDestinationId = $this->package['transit_destination_id'] ?? $this->package->invoice->transit_destination_id;
-$packageDestinationId = $this->package['package_destination_id'] ?? $this->package->invoice->package_destination_id;
+$senderId = !empty($this->package['sender_id'])
+    ? $this->package['sender_id']
+    : (!empty($this->package->invoice->sender_id)
+        ? $this->package->invoice->sender_id
+        : null);
+$transitDestinationId = !empty($this->package['transit_destination_id'])
+    ? $this->package['transit_destination_id']
+    : (!empty($this->package->invoice->transit_destination_id)
+        ? $this->package->invoice->transit_destination_id
+        : null);
+$packageDestinationId = !empty($this->package['package_destination_id'])
+    ? $this->package['package_destination_id']
+    : (!empty($this->package->invoice->package_destination_id)
+        ? $this->package->invoice->package_destination_id
+        : null);
 
 ?>
 

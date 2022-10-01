@@ -1,11 +1,11 @@
 @php
 $links = [
-    [
-        'href' => 'dashboard',
-        'text' => 'Dashboard',
-        'icon' => 'fire',
-        'is_multi' => false,
-    ],
+    // [
+    //     'href' => 'dashboard',
+    //     'text' => 'Dashboard',
+    //     'icon' => 'fire',
+    //     'is_multi' => false,
+    // ],
     [
         'href' => [
             [
@@ -20,12 +20,12 @@ $links = [
     [
         'href' => [
             [
-                'section_text' => 'User',
-                'section_list' => [['href' => 'user', 'text' => 'Data User'], ['href' => 'user.new', 'text' => 'Buat User']],
+                'section_text' => 'Pengguna',
+                'section_list' => [['href' => 'user', 'text' => 'Daftar Pengguna'], ['href' => 'user.new', 'text' => 'Tambah Pengguna']],
             ],
         ],
         'text' => 'User',
-        'icon' => 'chart-bar',
+        'icon' => 'user',
         'is_multi' => true,
     ],
 ];
@@ -35,7 +35,7 @@ $navigation_links = array_to_object($links);
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">Dashboard</a>
+            <a href="{{ route('dashboard') }}">UNX</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">

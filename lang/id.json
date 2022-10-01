@@ -1,0 +1,15 @@
+{
+    "package": "barang",
+    "package.tracking_no": "AWB",
+    "package.sender_id": "pengirim",
+    "package.recipient": "penerima",
+    "package.transit_destination_id": "tujuan lintas",
+    "package.package_destination_id": "tujuan barang",
+    "package.quantity": "jumlah",
+    "package.weight": "berat",
+    "package.volume": "volume",
+    "package.type": "jenis",
+    "package.cod": "COD",
+    "package.description": "keterangan",
+    "package.cost": "harga"
+}

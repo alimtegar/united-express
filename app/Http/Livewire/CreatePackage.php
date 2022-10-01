@@ -22,10 +22,6 @@ class CreatePackage extends Component
 
     protected function getRules()
     {
-        // $rules = ($this->action == 'createPackage') ? [
-
-        // ] : [];
-
         return [
             'package.tracking_no' => $this->action == 'createPackage' ? 'required|unique:packages,tracking_no|numeric' : '',
             'package.sender_id' => 'required|exists:senders,id|numeric',

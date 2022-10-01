@@ -107,7 +107,7 @@ return [
     'prohibited_unless' => 'Bidang :attribute dilarang kecuali :other ada di :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
     'regex' => 'Format :attribute tidak valid.',
-    'required' => 'Kolom :attribute wajib diisi.',
+    'required' => 'Kolom wajib diisi.',
     'required_array_keys' => 'Bidang :attribute harus berisi entri untuk: :nilai.',
     'required_if' => 'Bidang :attribute diperlukan ketika :other adalah :value.',
     'required_unless' => 'Bidang :attribute wajib diisi kecuali :other ada di :values.',
