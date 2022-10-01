@@ -140,12 +140,6 @@ class CreatePackage extends Component
         $this->incrementDataCols($invoice, $colVals);
     }
 
-    public function getManifestInvoiceDiffVal($newVal, $oldVal) {
-        $diffVal = $oldVal - $newVal;
-
-        return $diffVal < 0 ? $newVal + $diffVal : $newVal;
-    }
-
     public function updatePackage()
     {
         $this->resetErrorBag();

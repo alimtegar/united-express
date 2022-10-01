@@ -59,8 +59,8 @@
                     <td class="whitespace-no-wrap row-action--icon">
                         <a role="button" href="{{ route('packages.edit', ['package' => $package->id]) }}"><i
                                 class="fa fa-16px fa-pen"></i></a>
-                        {{-- <a role="button" x-on:click.prevent="deleteItem" href="#"><i
-                                class="fa fa-16px fa-trash text-red-500"></i></a> --}}
+                        <a role="button" x-on:click.prevent="deleteItem" href="#"><i
+                                class="fa fa-16px fa-trash text-red-500"></i></a>
                     </td>
                     <td>{{ $package->tracking_no }}</td>
                     <td>{{ $package->manifest->transitDestination->name }}</td>

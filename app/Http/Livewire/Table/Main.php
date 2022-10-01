@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Table;
 
+use App\Models\Manifest;
+use App\Models\Invoice;
 use App\Models\TransitDestination;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Traits\WithDataTable;
+use Carbon\Carbon;
 
 class Main extends Component
 {
@@ -34,8 +37,31 @@ class Main extends Component
         $this->sortField = $field;
     }
 
+    public function decrementDataCols($data, $colVals) {
+        foreach ($colVals as $col => $val) {
+            if(!empty($val)) { $data->decrement($col, $val); }
+        }
+    }
+
+    public function decrementOldManifestCols($package, $colVals) {
+        $manifest = Manifest::query()
+            ->where('transit_destination_id', $package->manifest->transit_destination_id)
+            ->whereDate('created_at', Carbon::parse($package->created_at)->format('Y-m-d'));
+
+        $this->decrementDataCols($manifest, $colVals);
+    }
+
+    public function decrementOldInvoiceCols($package, $colVals) {
+        $invoice = Invoice::query()
+            ->where('sender_id', $package->invoice->sender_id)
+            ->whereDate('created_at', Carbon::parse($package->created_at)->format('Y-m-d'));
+
+        $this->decrementDataCols($invoice, $colVals);
+    }
+
     public function delete_item($id)
     {
+        // dd($this->name);
         $data = $this->model::find($id);
 
         if (!$data) {
@@ -44,6 +70,22 @@ class Main extends Component
                 "message" => "Gagal menghapus data " . $this->name
             ]);
             return;
+        }
+
+        if($this->name === 'package') {
+            $diffVals = [
+                'quantity' => $data->quantity,
+                'weight' => $data->weight,
+                'volume' => $data->volume,
+                'cod' => $data->cod,
+                'cost' => $data->cost,
+            ];
+
+            // Decrement manifest or invoice columns
+            if (boolval(array_sum($diffVals))) {
+                $this->decrementOldManifestCols($data, $diffVals);
+                $this->decrementOldInvoiceCols($data, $diffVals);
+            }
         }
 
         $data->delete();
@@ -67,7 +109,7 @@ class Main extends Component
                     'transitDestinations' => TransitDestination::all()->sortBy('name'),
                 ]);
                 break;
-            
+
             default:
                 # code...
                 break;
